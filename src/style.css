@@ -1,3 +1,11 @@
+:root  {
+    --orange: #FF934F;
+    --white: #F5F4E8;
+    --black: #06090F;
+    --dark-blue: #2C3A4C;
+    --light-blue: #80A1D4;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -5,4 +13,94 @@
 
 html, body {
     height: 100%;
+}
+
+html {
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-weight: normal;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+
+.sidebar {
+    background-color: var(--dark-blue);
+
+    padding-top: 1.5rem;
+
+}
+
+h1 {
+    font-family: 'Nimbus Mono PS', 'Courier New', monospace;
+    font-weight: normal;
+
+    text-align: center;
+
+    color: var(--orange);
+}
+
+h1 > span {
+    font-size: 2.6rem;
+
+    color:var(--white)
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-dashboard {
+    padding: 0 1rem
+}
+
+.todo-dashboard > div{
+    padding: 1rem 2rem
+}
+
+.border-top {
+    border-top: 2px solid var(--orange);
+}
+
+.border-bottom {
+    border-bottom: 2px solid var(--orange);
+}
+
+.flex-grow {
+    flex-grow: 3;
+}
+
+.dashboard-button {
+    background-color: transparent;
+    border: 0px solid;
+
+    margin-bottom: 0.8rem;
+
+    color: var(--white);
+    text-align: start;
+    font-family: inherit;
+    font-size: 1.2rem;
+}
+
+.github {
+    margin-top: auto;
+
+    color: var(--white);
+    font-size: 1rem;
+
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.github svg{
+    width: 50px;
+}
+
+.content {
+    background-color: var(--white);
 }
