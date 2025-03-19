@@ -2,10 +2,11 @@
 const projects = [];
 
 class ToDo {
-    constructor(title, description, dueDate, priority){
+    constructor(title, description, dueDate, dateAdded, priority){
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
+        this.dateAdded = dateAdded;
         this.priority = priority;
     }
 }
@@ -13,5 +14,6 @@ class ToDo {
 class Project {
     constructor(title){
         this.title = title;
+        this.todos = []
     }
 }

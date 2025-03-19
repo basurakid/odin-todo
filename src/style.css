@@ -1,6 +1,6 @@
 :root  {
     --orange: #FF934F;
-    --white: #F5F4E8;
+    --white: #F9F8F1;
     --black: #06090F;
     --dark-blue: #2C3A4C;
     --light-blue: #80A1D4;
@@ -22,7 +22,7 @@ html {
 
 body {
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 2fr 8fr;
 }
 
 .sidebar {
@@ -32,16 +32,18 @@ body {
 
 }
 
-h1 {
+.logo {
     font-family: 'Nimbus Mono PS', 'Courier New', monospace;
     font-weight: normal;
 
     text-align: center;
 
     color: var(--orange);
+
+    padding: 0 2rem
 }
 
-h1 > span {
+.logo span {
     font-size: 2.6rem;
 
     color:var(--white)
@@ -84,6 +86,11 @@ h1 > span {
     font-size: 1.2rem;
 }
 
+.dashboard-button:hover {
+    color: var(--orange);
+    cursor: pointer;
+}
+
 .github {
     margin-top: auto;
 
@@ -99,8 +106,96 @@ h1 > span {
 
 .github svg{
     width: 50px;
+    margin-right: 0.5rem;
 }
 
 .content {
     background-color: var(--white);
+    color: var(--dark-blue);
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.current-view {
+    margin: 0 2rem;
+    padding: 1.47rem 1.5rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-todo {
+    background-color: transparent;
+    border: 0px solid transparent;
+    font-family: inherit;
+    font-size: 1.2rem;
+    color: var(--dark-blue);
+    font-weight: 600;
+}
+
+.todos {
+    margin: 1rem 5rem;
+}
+
+.todo {
+    padding: 1rem 0.5rem;
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr 40px 40px 40px;
+    gap: 1rem;
+    align-items: center;
+
+    border-top: 2px solid var(--dark-blue);
+    border-bottom: 2px solid var(--dark-blue);
+}
+
+.todo h3 {
+    font-size: 1.4rem;
+}
+
+.todo input {
+    height: 1.5rem;
+    display: inline-block;
+}
+
+.todo button {
+    border: 0px solid transparent;
+    height: 40px;
+    width: 40px;
+    color: transparent;
+}
+
+.due-date {
+    text-align: end;
+    display: block;
+}
+
+.priority {
+    background: url(Icons/star-svgrepo-com.svg) center / contain no-repeat ;
+
+    
+}
+
+.high {
+    background: url(Icons/star-solid-svgrepo-com.svg) center / contain no-repeat;
+}
+
+.edit {
+    background: url(Icons/pencil-svgrepo-com.svg) center / contain no-repeat;
+}
+
+.close {
+    background: url(Icons/close-svgrepo-com.svg) center / contain no-repeat;
+
+}
+
+.description {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    margin-left: 0.5rem;
+    font-size: 0.9rem;
 }
