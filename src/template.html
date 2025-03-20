@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="sidebar flex-column">
-        <h1 class="logo"><span>DONE</span>&<span>DUSTED</span></h1>
+        <h1 class="logo"><span class="red-text">DONE</span>&<span class="yellow-text">DUSTED</span></h1>
         <div class="todo-dashboard flex-column">
             <div class="filtered-todos flex-column border-top border-bottom">
                 <button class="dashboard-button">All Tasks</button>
@@ -27,20 +27,40 @@
         </a>
     </div>
     <div class="content">
-        <div class="current-view border-bottom">
+        <div class="current-view" id="current">
             <h2>My tasks</h2>
             <button class="create-todo" id="create-todo">+ Add Todo</button>
         </div>
         <ul class="todos">
-            <li class="todo">
+            <li class="todo low-priority">
                 <input type="checkbox">
-                <h3>Todo 1</h3>
+                <h3>Low priority</h3>
                 <p class="due-date">13/03/2024</p>
-                <button class="priority">Priority</button>
-                <button class="edit">Edit Todo</button>
+                <button class="show-more">Show more</button>
                 <button class="close">Delete</button>
-                <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie bibendum rutrum. Etiam erat ipsum, tincidunt vitae vehicula a, lobortis quis velit. Integer justo justo, vulputate eu tellus id, auctor.</p>
+                <div class="hidden">
+                    <div class="btn-group">
+                        <button></button>
+                        <button></button>
+                        <button></button>
+                    </div>
+                </div>
             </li>
+            <li class="todo high-priority">
+                <input type="checkbox">
+                <h3>High priority</h3>
+                <p class="due-date">13/03/2024</p>
+                <button class="show-more">Show more</button>
+                <button class="close">Delete</button>
+            </li>
+            <li class="todo med-priority">
+                <input type="checkbox">
+                <h3>Medium priority</h3>
+                <p class="due-date">13/03/2024</p>
+                <button class="show-more">Show more</button>
+                <button class="close">Delete</button>
+            </li>
+
         </ul>
     </div>
 </body>

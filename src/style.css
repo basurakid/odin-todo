@@ -1,9 +1,9 @@
 :root  {
-    --orange: #FF934F;
-    --white: #F9F8F1;
-    --black: #06090F;
-    --dark-blue: #2C3A4C;
-    --light-blue: #80A1D4;
+    --white: #ECECEC;
+    --black: #3D3D3D;
+    --blue: #5463FF;
+    --red: #FF1818;
+    --yellow: #FFC300;
 }
 
 * {
@@ -26,27 +26,24 @@ body {
 }
 
 .sidebar {
-    background-color: var(--dark-blue);
-
-    padding-top: 1.5rem;
-
+    background-color: var(--blue);
 }
 
 .logo {
-    font-family: 'Nimbus Mono PS', 'Courier New', monospace;
-    font-weight: normal;
+    font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+    font-weight: 600;
 
     text-align: center;
 
-    color: var(--orange);
+    color: var(--yellow);
 
-    padding: 0 2rem
+    padding: 1.5rem 2rem 1rem 2rem;
 }
 
 .logo span {
     font-size: 2.6rem;
-
-    color:var(--white)
+    color: var(--white);
+    filter: drop-shadow(1px 4px var(--red))
 }
 
 .flex-column {
@@ -59,15 +56,15 @@ body {
 }
 
 .todo-dashboard > div{
-    padding: 1rem 2rem
+    padding: 1rem 3rem
 }
 
 .border-top {
-    border-top: 2px solid var(--orange);
+    border-top: 3px solid var(--white);
 }
 
 .border-bottom {
-    border-bottom: 2px solid var(--orange);
+    border-bottom: 3px solid var(--white);
 }
 
 .flex-grow {
@@ -87,7 +84,8 @@ body {
 }
 
 .dashboard-button:hover {
-    color: var(--orange);
+    color: var(--yellow);
+    font-weight: 600;
     cursor: pointer;
 }
 
@@ -111,7 +109,7 @@ body {
 
 .content {
     background-color: var(--white);
-    color: var(--dark-blue);
+    color: var(--black);
 
     display: flex;
     flex-direction: column;
@@ -120,11 +118,12 @@ body {
 
 .current-view {
     margin: 0 2rem;
-    padding: 1.47rem 1.5rem;
+    padding: 1.93rem 1.5rem;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 3px solid var(--black);
 }
 
 .create-todo {
@@ -132,34 +131,41 @@ body {
     border: 0px solid transparent;
     font-family: inherit;
     font-size: 1.2rem;
-    color: var(--dark-blue);
     font-weight: 600;
 }
 
 .todos {
     margin: 1rem 5rem;
+    gap: 1rem;
 }
 
 .todo {
-    padding: 1rem 0.5rem;
+    padding: 0.4rem 0.5rem;
+    margin-bottom: 1rem;
+
     list-style: none;
 
     display: grid;
-    grid-template-columns: 40px 1fr 1fr 40px 40px 40px;
-    gap: 1rem;
+    grid-template-columns: 40px 1fr 1fr 40px 40px ;
+    gap: 0.5rem;
     align-items: center;
 
-    border-top: 2px solid var(--dark-blue);
-    border-bottom: 2px solid var(--dark-blue);
+
 }
 
 .todo h3 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    font-weight: normal;
 }
 
-.todo input {
-    height: 1.5rem;
+.todo input[type="checkbox"]:before {
+    height: 1.2rem;
     display: inline-block;
+    
+}
+
+.todo input[type="checkbox"]:before {
+    background-color: var(--white);
 }
 
 .todo button {
@@ -172,25 +178,19 @@ body {
 .due-date {
     text-align: end;
     display: block;
-}
-
-.priority {
-    background: url(Icons/star-svgrepo-com.svg) center / contain no-repeat ;
-
-    
-}
-
-.high {
-    background: url(Icons/star-solid-svgrepo-com.svg) center / contain no-repeat;
-}
-
-.edit {
-    background: url(Icons/pencil-svgrepo-com.svg) center / contain no-repeat;
+    margin-right: 1rem;
 }
 
 .close {
     background: url(Icons/close-svgrepo-com.svg) center / contain no-repeat;
+}
 
+.show-more {
+    background: url(Icons/chevron-down-svgrepo-com.svg) center / contain no-repeat;
+}
+
+.show-less {
+    background: url(Icons/chevron-up-svgrepo-com.svg) center / contain no-repeat;
 }
 
 .description {
@@ -198,4 +198,23 @@ body {
     grid-column-end: 4;
     margin-left: 0.5rem;
     font-size: 0.9rem;
+}
+
+.low-priority {
+    border-top: 3px solid var(--blue);
+    border-bottom: 3px solid var(--blue);
+}
+
+.med-priority {
+    border-top: 3px solid var(--yellow);
+    border-bottom: 3px solid var(--yellow);
+}
+
+.high-priority {
+    border-top: 3px solid var(--red);
+    border-bottom: 3px solid var(--red);
+}
+
+.btn-group {
+    
 }
