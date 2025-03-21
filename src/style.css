@@ -25,6 +25,10 @@ body {
     grid-template-columns: 2fr 8fr;
 }
 
+button {
+    cursor: pointer;
+}
+
 .sidebar {
     background-color: var(--blue);
 }
@@ -86,7 +90,6 @@ body {
 .dashboard-button:hover {
     color: var(--yellow);
     font-weight: 600;
-    cursor: pointer;
 }
 
 .github {
@@ -134,7 +137,7 @@ body {
     font-weight: 600;
 }
 
-.todos {
+.todos-container {
     margin: 1rem 5rem;
     gap: 1rem;
 }
@@ -149,7 +152,6 @@ body {
     grid-template-columns: 40px 1fr 1fr 40px 40px ;
     gap: 0.5rem;
     align-items: center;
-
 
 }
 
@@ -215,6 +217,67 @@ body {
     border-bottom: 3px solid var(--red);
 }
 
-.btn-group {
-    
+.hidden {
+    display: none;
+    width: 62.5vw;
+    padding: 1rem 3rem
 }
+
+.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-group {
+    display: inline-flex;
+    width: 100%;
+}
+
+.btn-group button {
+    padding: 0.3rem 1rem;
+    text-align: center;
+
+    outline: none;
+    border: none;
+    
+    border-right: 2px solid var(--white);
+
+    color: var(--black);
+    font-family: inherit;
+    font-size: 0.8rem;
+
+    width: 80px;
+    height: 30px;
+
+    background-color: #E0E0E0;
+}
+
+.btn-group :last-child {
+    border-right: none;
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.btn-group :first-child {
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+}
+
+.btn-group :first-child:hover {
+    background-color: #5463FF;
+}
+
+.btn-group :last-child:hover {
+    background-color: var(--red);
+}
+
+.btn-group :nth-child(2):hover {
+    background-color: var(--yellow);
+}
+
+.description {
+    margin-top: 1rem;
+    text-align: justify;
+}
+
+
