@@ -42,21 +42,25 @@ function addModalListeners() {
     //add project modal button listener
     document.querySelector("#submit-project").addEventListener(() => {
         const nameInput = document.querySelector("#name");
-        add_project(nameInput.value);
+        const addProjectId = add_project(nameInput.value);
+
+        updateProjectDisplay(addProjectId, nameInput.value, true)
+
         nameInput.value = "";
         projectModal.parent.close();
-
     });
 
     //add delete project listeners
     const deleteProjectModal = document.querySelector(".delete-project-modal");
     addGlobalEventListener("click", "button", deleteProjectModal, (e) => {
         if (e.textContent = "Yes") {
-            const projectDelete = document.querySelector(".current-view h2").textContent;
+            const deleteProjectId = document.querySelector(".current-view h2").dataset.id;
 
-           
-        }
-    })
+            deleteProjectId(deleteProjectId);
+            
+            updateProjectDisplay(addProjectId, "", false);
+        };
+    });
 }
 
 
