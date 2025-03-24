@@ -29,7 +29,10 @@
     <div class="content">
         <div class="current-view" id="current">
             <h2>My tasks</h2>
-            <button class="create-todo" id="create-todo">+ Add Todo</button>
+            <div>
+                <button class="delete-project">Delete Project</button>
+                <button class="create-todo" id="create-todo">+ Add Todo</button>
+            </div>
         </div>
         <ul class="todos-container">
             <li class="todo low-priority">
@@ -68,5 +71,35 @@
 
         </ul>
     </div>
+    <dialog class="new-todo-modal">
+        <form method="dialog" class="new-todo-form">
+            <p>Add new book</p>
+            <label for="title">Title*</label>
+            <input type="text" id="title" name="title" placeholder="Title" required>
+            <label for="description">Pages*</label>
+            <textarea id="description" name="description" placeholder="Write a description for your todo"></textarea>
+            <label for="due-date">Due Date*</label>
+            <input type="date" id="due-date" name="due-date" required>
+            <label for="priority">Todo Priority</label>
+
+            <select id="priority" name="priority">
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+            <button>Add todo</button>
+        </form>
+    </dialog>
+    <dialog class="new-project-modal">
+        <p>Add new project</p>
+        <label for="name">Name*</label>
+        <input type="text" id="name" name="name" phaceholder="Project name" required>
+        <button>Add project</button>
+    </dialog>
+    <dialog class="del-project-confirmation-modal">
+        <p>Delete project? This will delete all todos inside</p>
+        <button>Yes</button>
+        <button>No</button>
+    </dialog>
 </body>
 </html>

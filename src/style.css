@@ -129,12 +129,20 @@ button {
     border-bottom: 3px solid var(--black);
 }
 
-.create-todo {
+.current-view button {
     background-color: transparent;
     border: 0px solid transparent;
     font-family: inherit;
     font-size: 1.2rem;
     font-weight: 600;
+}
+
+.create-todo {
+    margin-left: 2rem;
+}
+
+.delete-project :hover {
+    color: var(--red)
 }
 
 .todos-container {
