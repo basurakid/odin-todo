@@ -17,7 +17,7 @@
             </div>
             <div class="projects flex-column border-bottom flex-grow">
                 <button class="dashboard-button">My Tasks</button>
-                <button class="dashboard-button">+ Add Project</button>
+                <button class="dashboard-button" id="add-project">+ Add Project</button>
             </div>
         </div>
         <a href="https://github.com/basurakid" class="github" >
@@ -30,8 +30,8 @@
         <div class="current-view" id="current">
             <h2>My tasks</h2>
             <div>
-                <button class="delete-project">Delete Project</button>
-                <button class="create-todo" id="create-todo">+ Add Todo</button>
+                <button class="delete-project" id="delete-project">Delete Project</button>
+                <button class="create-todo" id="add-todo">+ Add Todo</button>
             </div>
         </div>
         <ul class="todos-container">
@@ -73,11 +73,10 @@
     </div>
     <dialog class="new-todo-modal">
         <form method="dialog" class="new-todo-form">
-            <p>Add new book</p>
             <label for="title">Title*</label>
             <input type="text" id="title" name="title" placeholder="Title" required>
-            <label for="description">Pages*</label>
-            <textarea id="description" name="description" placeholder="Write a description for your todo"></textarea>
+            <label for="description">description*</label>
+            <textarea id="description" name="description" placeholder="Write a description for your todo" rows="5"></textarea>
             <label for="due-date">Due Date*</label>
             <input type="date" id="due-date" name="due-date" required>
             <label for="priority">Todo Priority</label>
@@ -91,13 +90,12 @@
         </form>
     </dialog>
     <dialog class="new-project-modal">
-        <p>Add new project</p>
-        <label for="name">Name*</label>
+        <label for="name">Project Name*</label>
         <input type="text" id="name" name="name" phaceholder="Project name" required>
         <button>Add project</button>
     </dialog>
-    <dialog class="del-project-confirmation-modal">
-        <p>Delete project? This will delete all todos inside</p>
+    <dialog class="delete-project-modal">
+        <p>Are you sure you want to delete the project?</p>
         <button>Yes</button>
         <button>No</button>
     </dialog>

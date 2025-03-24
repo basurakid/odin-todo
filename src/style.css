@@ -289,3 +289,62 @@ button {
 }
 
 
+
+dialog {
+    justify-self: center;
+    align-self: center;
+    padding: 3rem 3rem;
+    text-align: center;
+    border-top:4px solid var(--red);
+    border-bottom:4px solid var(--red);
+    border-right:4px solid var(--yellow);
+    border-left:4px solid var(--blue);
+
+}
+
+dialog button {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 0.5rem 3rem;
+    border-radius: 1rem;
+    font-weight: 600;
+}
+
+dialog label {
+    display: none;
+}
+
+dialog input, button, select{
+    font-family: inherit;
+}
+
+dialog p {
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.new-todo-modal form{
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.new-project-modal * {
+    display: block;
+}
+
+.new-project-modal input{
+    margin: 1rem 0;
+}
+
+.new-project-modal label {
+    display: inline;
+}
+
+.delete-project-modal :last-child {
+    margin-left: 1rem;
+    background-color: var(--red);
+}
+
