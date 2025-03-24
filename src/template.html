@@ -10,13 +10,13 @@
         <h1 class="logo"><span class="red-text">DONE</span>&<span class="yellow-text">DUSTED</span></h1>
         <div class="todo-dashboard flex-column">
             <div class="filtered-todos flex-column border-top border-bottom">
-                <button class="dashboard-button">All Tasks</button>
-                <button class="dashboard-button">Today</button>
-                <button class="dashboard-button">Next 7 Days</button>
-                <button class="dashboard-button">Priority Tasks</button>
+                <button class="dashboard-button sort-button">All Tasks</button>
+                <button class="dashboard-button sort-button">Today</button>
+                <button class="dashboard-button sort-button">Next 7 Days</button>
+                <button class="dashboard-button sort-button">Priority Tasks</button>
             </div>
             <div class="projects flex-column border-bottom flex-grow">
-                <button class="dashboard-button">My Tasks</button>
+                <button class="dashboard-button project-button">My Tasks</button>
                 <button class="dashboard-button" id="add-project">+ Add Project</button>
             </div>
         </div>
@@ -86,7 +86,7 @@
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
             </select>
-            <button>Add todo</button>
+            <button type="submit">Add todo</button>
         </form>
     </dialog>
     <dialog class="new-project-modal">

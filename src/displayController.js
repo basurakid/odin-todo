@@ -1,5 +1,5 @@
 
-function buttonListenerModals() {
+function addShowModalListeners() {
     const addProjectModal = document.querySelector(".new-project-modal");
     console.log(addProjectModal);
     const addProjectBtn = document.querySelector("#add-project")
@@ -20,6 +20,21 @@ function buttonListenerModals() {
     });
 };
 
+function addDashboardListeners() {
+    const allTaskBtn = document.querySelector();
+}
+
+function addModalListeners() {
+    //add todo modal submit listener
+    const todoForm = document.querySelector(".new-todo-form");
+    todoForm.addEventListener("submit", (event) =>{
+        event.preventDefault();
+
+        const todoData = new FormData(todoForm);
+        
+    })
+}
+
 function addGlobalEventListener(type, selector, callback, parent = document) {
     parent.addEventListener(type, e => {
         if (e.target.matches(selector)) {
@@ -28,4 +43,4 @@ function addGlobalEventListener(type, selector, callback, parent = document) {
     })
 }
 
-export {buttonListenerModals};
+export {addShowModalListeners};

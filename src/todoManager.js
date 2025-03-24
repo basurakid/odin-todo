@@ -17,3 +17,9 @@ class Project {
         this.todos = []
     }
 }
+
+function createToDo (data) {
+    new ToDo()
+}
+
+export const myTasks = new Project("My tasks");
