@@ -1,11 +1,16 @@
+function addGlobalEventListener(type, selector, parent = document, callback) {
+    parent.addEventListener(type, e => {
+        if (e.target.matches(selector)) {
+            callback(e);
+        }
+    })
+}
+
 
 function addShowModalListeners() {
+    //Adds listeners to open the 3 modals to delete and add projects and add todos
     const addProjectModal = document.querySelector(".new-project-modal");
-    console.log(addProjectModal);
-    const addProjectBtn = document.querySelector("#add-project")
-    console.log(addProjectBtn);
-
-    addProjectBtn.addEventListener("click", () => {
+    document.querySelector("#add-project").addEventListener("click", () => {
         addProjectModal.showModal();
     });
 
@@ -32,15 +37,28 @@ function addModalListeners() {
 
         const todoData = new FormData(todoForm);
         
-    })
-}
+    });
 
-function addGlobalEventListener(type, selector, callback, parent = document) {
-    parent.addEventListener(type, e => {
-        if (e.target.matches(selector)) {
-            callback(e);
+    //add project modal button listener
+    document.querySelector("#submit-project").addEventListener(() => {
+        const nameInput = document.querySelector("#name");
+        add_project(nameInput.value);
+        nameInput.value = "";
+        projectModal.parent.close();
+
+    });
+
+    //add delete project listeners
+    const deleteProjectModal = document.querySelector(".delete-project-modal");
+    addGlobalEventListener("click", "button", deleteProjectModal, (e) => {
+        if (e.textContent = "Yes") {
+            const projectDelete = document.querySelector(".current-view h2").textContent;
+
+           
         }
     })
 }
 
-export {addShowModalListeners};
+
+
+export { addShowModalListeners, addModalListeners};

@@ -3,6 +3,7 @@ const projects = [];
 
 class ToDo {
     constructor(title, description, dueDate, dateAdded, priority){
+        this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -13,13 +14,27 @@ class ToDo {
 
 class Project {
     constructor(title){
+        this.id = crypto.randomUUID();
         this.title = title;
         this.todos = []
     }
 }
 
-function createToDo (data) {
+function addToDo (data) {
     new ToDo()
 }
 
-export const myTasks = new Project("My tasks");
+function addProject (name) {
+    const actualProjects = JSON.parse(localStorage.getItem("projects"));
+    const updatedProjects = actualProjects.push(new Project(name));
+    localStorage.setItem("projects", updatedProjects);
+}
+
+function deleteProject (id) {
+    const actualProjects = JSON.parse(localStorage.getItem("projects"));
+
+    const deleteIndex = actualProjects.findIndex(p => p.id = id);
+    localStorage.setItem("projects") = JSON.stringify(actualProjects.splice(deleteIndex, 1));
+}
+
+export { Project, addProject};
