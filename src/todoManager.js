@@ -7,7 +7,6 @@ class Todo {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.dateAdded = dateAdded;
         this.priority = priority;
     }
 }
@@ -20,15 +19,24 @@ class Project {
     }
 }
 
-function addTodo (data, id) {
+function findProjectIndex () {
+    const id = document.querySelector(".current-view h2").dataset.id;
+    return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
+}
+
+function addTodo (data) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
-    newTodo = new ToDo(data.title, data.description, new Date(data.get("due-date")), data.priority);
-    console.log(newTodo)
+    const newTodo = new Todo(data.title, data.description, new Date(data.get("due-date")), data.priority);
+
+    localProjects[findProjectIndex()].todos.push(newTodo);
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+
+    return newTodo.id;
 }
 
 function addProject (name) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
-    const newProject = new Project(name)
+    const newProject = new Project(name);
 
     localProjects.push(newProject);
     localStorage.setItem("projects", JSON.stringify(localProjects));
@@ -36,15 +44,13 @@ function addProject (name) {
     return newProject.id;
 }
 
-function deleteProject (id) {
-    const actualProjects = localStorage.getItem("projects");
+function deleteProject () {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
 
-    const parsedProjects = JSON.parse(actualProjects);
-
-    const deleteIndex = parsedProjects.findIndex(p => p.id === id);
+    const deleteIndex = findProjectIndex();
 
     if (deleteIndex !== -1) {
-        parsedProjects.splice(deleteIndex, 1);
+        localProjects.splice(deleteIndex, 1);
         localStorage.setItem("projects", JSON.stringify(parsedProjects));  
     } else {
         alert(`Project with id ${id} not found.`);

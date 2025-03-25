@@ -34,6 +34,7 @@ function addDashboardListeners() {
 function addModalListeners() {
     //add todo modal submit listener
     const todoForm = document.querySelector(".new-todo-form");
+    const todoModal = document.querySelector(".new-todo-modal");
     todoForm.addEventListener("submit", (event) =>{
         event.preventDefault();
         const todoData = new FormData(todoForm);
@@ -41,16 +42,15 @@ function addModalListeners() {
     
         for (const input of todoData.entries()) {
             console.log(input[0], input[1]);
-            if (input[0] !== "description"){
-                if (!input[1]) {
+            if (input[0] !== "description" && !input[1]){
                     alert(`You must enter a value in the ${input[0]} field`);
                     return;
-                }
             }
-           
         }
 
-        addTodo(todoData);
+        const currentProjectId = document.querySelector(".current-view h2").dataset.id;
+        addTodo(todoData, currentProjectId);
+        todoModal.close();
     });
 
     //add project modal button listener
