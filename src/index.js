@@ -15,10 +15,14 @@ addShowModalListeners();
 
 //test addproject and deleteproject
 
-const localProjects = JSON.parse(localStorage.getItem("projects"));
-console.log(localProjects);
+let localProjects = JSON.parse(localStorage.getItem("projects"));
+console.log("Raw Localstorage before addProject",localProjects);
+
 const projectId = addProject("testName");
-console.log(localProjects);
+localProjects = JSON.parse(localStorage.getItem("projects"));
+console.log("Updated Localstorage after addProject",localProjects);
+
 deleteProject(projectId);
-console.log(localProjects);
+localProjects = JSON.parse(localStorage.getItem("projects"));
+console.log("Updated Localstorage after deleteProject",localProjects);
 

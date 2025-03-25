@@ -56,7 +56,7 @@ function addModalListeners() {
         if (e.textContent = "Yes") {
             const deleteProjectId = document.querySelector(".current-view h2").dataset.id;
 
-            deleteProjectId(deleteProjectId);
+            deleteProject(deleteProjectId);
             
             updateProjectDisplay(addProjectId, "", false);
         };

@@ -25,18 +25,26 @@ function addToDo (data) {
 }
 
 function addProject (name) {
-    const actualProjects = JSON.parse(localStorage.getItem("projects"));
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
     const newProject = new Project(name)
-    const updatedProjects = actualProjects.push(newProject);
-    localStorage.setItem("projects", updatedProjects);
+
+    localProjects.push(newProject);
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+
     return newProject.id;
 }
 
 function deleteProject (id) {
-    const actualProjects = JSON.parse(localStorage.getItem("projects"));
+    const actualProjects = localStorage.getItem("projects");
+    console.log("Raw localStorage value:", localStorage.getItem("projects"));
+    console.log("actualProjects variable:", actualProjects);
 
-    const deleteIndex = actualProjects.findIndex(p => p.id = id);
-    localStorage.setItem("projects", JSON.stringify(actualProjects.splice(deleteIndex, 1)));  
+    const parsedProjects = JSON.parse(actualProjects);
+    console.log("Parsed value:", parsedProjects, "Type:", typeof parsedProjects);
+
+    const deleteIndex = parsedProjects.findIndex(p => p.id === id);
+    parsedProjects.splice(deleteIndex, 1);
+    localStorage.setItem("projects", JSON.stringify(parsedProjects));  
 }
 
 export { Project, addProject, deleteProject};
