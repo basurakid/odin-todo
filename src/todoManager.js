@@ -26,15 +26,17 @@ function addToDo (data) {
 
 function addProject (name) {
     const actualProjects = JSON.parse(localStorage.getItem("projects"));
-    const updatedProjects = actualProjects.push(new Project(name));
+    const newProject = new Project(name)
+    const updatedProjects = actualProjects.push(newProject);
     localStorage.setItem("projects", updatedProjects);
+    return newProject.id;
 }
 
 function deleteProject (id) {
     const actualProjects = JSON.parse(localStorage.getItem("projects"));
 
     const deleteIndex = actualProjects.findIndex(p => p.id = id);
-    localStorage.setItem("projects") = JSON.stringify(actualProjects.splice(deleteIndex, 1));
+    localStorage.setItem("projects", JSON.stringify(actualProjects.splice(deleteIndex, 1)));  
 }
 
-export { Project, addProject};
+export { Project, addProject, deleteProject};
