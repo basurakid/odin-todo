@@ -1,8 +1,8 @@
 
 const projects = [];
 
-class ToDo {
-    constructor(title, description, dueDate, dateAdded, priority){
+class Todo {
+    constructor(title, description="", dueDate, dateAdded, priority){
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
@@ -20,8 +20,10 @@ class Project {
     }
 }
 
-function addToDo (data) {
-    new ToDo()
+function addTodo (data, id) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+    newTodo = new ToDo(data.title, data.description, new Date(data.get("due-date")), data.priority);
+    console.log(newTodo)
 }
 
 function addProject (name) {
@@ -36,15 +38,18 @@ function addProject (name) {
 
 function deleteProject (id) {
     const actualProjects = localStorage.getItem("projects");
-    console.log("Raw localStorage value:", localStorage.getItem("projects"));
-    console.log("actualProjects variable:", actualProjects);
 
     const parsedProjects = JSON.parse(actualProjects);
-    console.log("Parsed value:", parsedProjects, "Type:", typeof parsedProjects);
 
     const deleteIndex = parsedProjects.findIndex(p => p.id === id);
-    parsedProjects.splice(deleteIndex, 1);
-    localStorage.setItem("projects", JSON.stringify(parsedProjects));  
+
+    if (deleteIndex !== -1) {
+        parsedProjects.splice(deleteIndex, 1);
+        localStorage.setItem("projects", JSON.stringify(parsedProjects));  
+    } else {
+        alert(`Project with id ${id} not found.`);
+    }
+
 }
 
-export { Project, addProject, deleteProject};
+export { Project, addProject, deleteProject, addTodo};

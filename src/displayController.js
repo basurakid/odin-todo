@@ -1,3 +1,5 @@
+import { addProject, deleteProject, addTodo } from "./todoManager";
+
 function addGlobalEventListener(type, selector, parent = document, callback) {
     parent.addEventListener(type, e => {
         if (e.target.matches(selector)) {
@@ -34,32 +36,53 @@ function addModalListeners() {
     const todoForm = document.querySelector(".new-todo-form");
     todoForm.addEventListener("submit", (event) =>{
         event.preventDefault();
-
         const todoData = new FormData(todoForm);
-        
+
+    
+        for (const input of todoData.entries()) {
+            console.log(input[0], input[1]);
+            if (input[0] !== "description"){
+                if (!input[1]) {
+                    alert(`You must enter a value in the ${input[0]} field`);
+                    return;
+                }
+            }
+           
+        }
+
+        addTodo(todoData);
     });
 
     //add project modal button listener
-    document.querySelector("#submit-project").addEventListener(() => {
+    const addProjectModal = document.querySelector(".new-project-modal")
+    document.querySelector("#submit-project").addEventListener("click", () => {
         const nameInput = document.querySelector("#name");
-        const addProjectId = add_project(nameInput.value);
+        
+        if (nameInput.value) {
+            const addProjectId = addProject(nameInput.value);
 
-        updateProjectDisplay(addProjectId, nameInput.value, true)
+            //updateProjectDisplay(addProjectId, nameInput.value, true)
 
-        nameInput.value = "";
-        projectModal.parent.close();
+            nameInput.value = "";
+            addProjectModal.close();
+        }
     });
 
     //add delete project listeners
     const deleteProjectModal = document.querySelector(".delete-project-modal");
     addGlobalEventListener("click", "button", deleteProjectModal, (e) => {
-        if (e.textContent = "Yes") {
+        if (e.target.textContent === "Yes") {
             const deleteProjectId = document.querySelector(".current-view h2").dataset.id;
 
             deleteProject(deleteProjectId);
             
-            updateProjectDisplay(addProjectId, "", false);
-        };
+            //updateProjectDisplay(addProjectId, "", false);
+            deleteProjectModal.close();
+
+        } else {
+            console.log(deleteProjectModal);
+            deleteProjectModal.close();
+        }
     });
 }
 

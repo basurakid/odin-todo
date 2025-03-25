@@ -78,10 +78,10 @@
             <label for="description">description*</label>
             <textarea id="description" name="description" placeholder="Write a description for your todo" rows="5"></textarea>
             <label for="due-date">Due Date*</label>
-            <input type="date" id="due-date" name="due-date" required>
+            <input type="date" id="due-date" name="due-date" placeholder="dd-mm-yyyy"  required>
             <label for="priority">Todo Priority</label>
-
-            <select id="priority" name="priority">
+            <select id="priority" name="priority" required>
+                <option value="" disabled selected hidden>Priority</option>
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
