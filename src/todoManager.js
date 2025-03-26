@@ -19,8 +19,12 @@ class Project {
     }
 }
 
-function findProjectIndex () {
-    const id = document.querySelector(".current-view h2").dataset.id;
+//find index of a given project, id can be passed onto it, or it can retrieve it from the h2
+function findProjectIndex(id="") {
+    if (!id) {
+        const id = document.querySelector("#current-project").dataset.id;
+    }
+    
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
 }
 
@@ -58,4 +62,4 @@ function deleteProject () {
 
 }
 
-export { Project, addProject, deleteProject, addTodo};
+export { Project, addProject, deleteProject, addTodo, findProjectIndex};

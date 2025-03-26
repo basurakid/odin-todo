@@ -8,7 +8,6 @@ if (!localStorage.getItem("projects")) {
     addProject("My Tasks");
 } else {
     //TODO: load the project on the content div witht its todos
-    console.log("Stored Projects", localStorage.getItem("projects"));
 }
 
 
