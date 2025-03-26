@@ -122,6 +122,7 @@ function addShowModalListeners() {
 };
 
 function addDashboardListeners() {
+    // TODO
     // set the sorting all todos buttons
     const sortBtns = document.querySelector("#sort-buttons");
 
@@ -170,7 +171,7 @@ function addModalListeners() {
 
 
             const btnProject = document.createElement("button");
-            btnProject.classList.add("dashboard-button", "project-button");
+            btnProject.classList.add("dashboard-button");
             btnProject.textContent = nameInput.value;
             btnProject.setAttribute("data-id", addProjectId);
 

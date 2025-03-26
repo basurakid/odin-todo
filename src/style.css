@@ -60,7 +60,7 @@ button {
 }
 
 .todo-dashboard > div{
-    padding: 1rem 3rem
+    padding: 1rem 3rem 0.2rem 3rem;
 }
 
 .border-top {
@@ -141,7 +141,7 @@ button {
     margin-left: 2rem;
 }
 
-.delete-project :hover {
+.delete-project:hover {
     color: var(--red)
 }
 
