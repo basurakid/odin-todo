@@ -8,7 +8,7 @@ function addGlobalEventListener(type, selector, parent = document, callback) {
     })
 }
 
-function loadTodoDisplay (todo) {
+function loadTodoDisplay(todo) {
     const todoLi = document.createElement("li");
     todoLi.classList.add(`${todo.priority}-priority`, "todo");
     todoLi.setAttribute("data-id", todo.id);
@@ -67,67 +67,41 @@ function loadTodoDisplay (todo) {
 }
 
 function loadProjectDisplay(id="") {
-    const localProjects = localStorage.getItem("projects");
     const projectH2 = document.querySelector("#current-project");
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
 
-    //checks if we're loading a certain project, or just the default one(first one), if localStorage is empty, disable buttons that would cause issues
+    //checks if we're loading a certain project, or just the default one(first one),
+    
     if (!id){
+        // if localStorage is empty, disable buttons that would cause issues, modify h2 to let user know there's no 
         if (!localProjects.length) {
             const disableButtons = document.querySelector("#current div").children;
             for (const button of disableButtons){
                 button.disabled = true;
-                
-                projectH2.textContent = "There are no projects";
-                projectH2.setAttribute("data-id", id);
             }
+            projectH2.textContent = "There are no projects";
+            projectH2.setAttribute("data-id", id);
             return;
         } 
         //loads first project on the list
         else {
-            id = document.querySelector(".projects").firstElementChild.dataset.id;
+            id = localProjects[0].id;
+            console.log(id);
         }
     } 
 
     //retrieve the project
-    const projectLoading = localStorage.getItem("projects")[findProjectIndex(id)];
+    const projectLoading = localProjects[findProjectIndex(id)];
+    console.log(projectLoading);
     projectH2.textContent = projectLoading.title;
     projectH2.setAttribute("data-id", id);
+    console.log(projectLoading, typeof(projectLoading))
 
     for (const todo of projectLoading.todos){
         loadTodoDisplay(todo);
     }
 
 }
-
-// Used only with modals to add and delete buttons/title on h2
-function updateProjectDisplay(id, name="", isAdded) {
-    const projectsDiv = document.querySelector(".projects");
-
-    if (isAdded) {
-        const btnProject = document.createElement("button");
-        btnProject.classList.add("dashboard-button", "project-button");
-        btnProject.textContent = name;
-        btnProject.setAttribute("data-id", id);
-
-        projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
-
-
-
-        loadProjectDisplay(id)
-    } else {
-        projectsDiv.querySelector(`.project-button[data-id="${id}"]`).remove();
-        
-        if (!localStorage.getItem("projects").length) {
-            const disableButtons = document.querySelector("#current div").children;
-            for (const button of disableButtons){
-                button.disabled = true;
-            }
-        } else {
-            loadProjectDisplay()
-        }
-    }
-}
-
 
 function addShowModalListeners() {
     //Adds listeners to open the 3 modals to delete and add projects and add todos
@@ -182,8 +156,17 @@ function addModalListeners() {
         
         if (nameInput.value) {
             const addProjectId = addProject(nameInput.value);
+            const projectsDiv = document.querySelector(".projects");
 
-            updateProjectDisplay(addProjectId, nameInput.value, true)
+
+            const btnProject = document.createElement("button");
+            btnProject.classList.add("dashboard-button", "project-button");
+            btnProject.textContent = nameInput.value;
+            btnProject.setAttribute("data-id", addProjectId);
+
+            projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
+
+            loadProjectDisplay(id)
 
             nameInput.value = "";
             addProjectModal.close();
@@ -194,10 +177,11 @@ function addModalListeners() {
     const deleteProjectModal = document.querySelector(".delete-project-modal");
     addGlobalEventListener("click", "button", deleteProjectModal, (e) => {
         if (e.target.textContent === "Yes") {
-
+            const deleteProjectId = document.querySelector("#current-project").dataset.id;
             deleteProject(deleteProjectId);
             
-            updateProjectDisplay(findPro, "", false);
+            projectsDiv.querySelector(`.project-button[data-id="${id}"]`).remove();
+            loadProjectDisplay();
             deleteProjectModal.close();
 
         } else {
@@ -205,6 +189,14 @@ function addModalListeners() {
             deleteProjectModal.close();
         }
     });
+}
+
+
+function setInitialListeners() {
+    addModalListeners();
+    addShowModalListeners();
+
+    addDashboardListeners();
 }
 
 

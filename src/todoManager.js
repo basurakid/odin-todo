@@ -28,7 +28,7 @@ function findProjectIndex(id="") {
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
 }
 
-function addTodo (data) {
+function addTodo(data) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
     const newTodo = new Todo(data.title, data.description, new Date(data.dueDate), data.priority);
 
@@ -38,7 +38,7 @@ function addTodo (data) {
     return newTodo.id;
 }
 
-function addProject (name) {
+function addProject(name) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
     const newProject = new Project(name);
 
@@ -48,7 +48,7 @@ function addProject (name) {
     return newProject.id;
 }
 
-function deleteProject () {
+function deleteProject(id) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
 
     const deleteIndex = findProjectIndex();
