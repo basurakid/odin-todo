@@ -122,7 +122,17 @@ function addShowModalListeners() {
 };
 
 function addDashboardListeners() {
-    const allTaskBtn = document.querySelector();
+    // set the sorting all todos buttons
+    const sortBtns = document.querySelector("#sort-buttons");
+
+    // add global listener
+    const projectsDiv = document.querySelector("#project-buttons");
+    addGlobalEventListener("click", ".project-button", projectsDiv, (e) => {
+        const currentProjectId = document.querySelector("#current h2").data.id;
+        if (e.target.data.id !== currentProjectId){
+            loadProjectDisplay(e.target.data.id);
+        }
+    })
 }
 
 function addModalListeners() {
@@ -156,7 +166,7 @@ function addModalListeners() {
         
         if (nameInput.value) {
             const addProjectId = addProject(nameInput.value);
-            const projectsDiv = document.querySelector(".projects");
+            const projectsDiv = document.querySelector("#project-buttons");
 
 
             const btnProject = document.createElement("button");
@@ -166,7 +176,7 @@ function addModalListeners() {
 
             projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
 
-            loadProjectDisplay(id)
+            loadProjectDisplay(addProjectId)
 
             nameInput.value = "";
             addProjectModal.close();
@@ -201,4 +211,4 @@ function setInitialListeners() {
 
 
 
-export { addShowModalListeners, addModalListeners};
+export {setInitialListeners};

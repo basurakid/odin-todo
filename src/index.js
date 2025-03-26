@@ -1,5 +1,5 @@
 import "./style.css";
-import {addShowModalListeners, addModalListeners} from "./displayController.js";
+import {setInitialListeners} from "./displayController.js";
 import {Project, addProject, deleteProject, addTodo} from "./todoManager.js";
 
 if (!localStorage.getItem("projects")) {
@@ -7,12 +7,11 @@ if (!localStorage.getItem("projects")) {
     localStorage.setItem("projects", JSON.stringify([new Project("My Tasks")]));
 } else {
     //TODO: load the project on the content div witht its todos
-    
+
 }
 
 
-addShowModalListeners();
-addModalListeners();
+setInitialListeners();
 
 
 
