@@ -66,21 +66,28 @@ function loadTodoDisplay(todo) {
     todoLi.appendChild(hiddenDiv);
 }
 
-function loadProjectDisplay(id="") {
-    const projectH2 = document.querySelector("#current-project");
-    const localProjects = JSON.parse(localStorage.getItem("projects"));
-
-    //checks if we're loading a certain project, or just the default one(first one),
-    
-    if (!id){
-        // if localStorage is empty, disable buttons that would cause issues, modify h2 to let user know there's no 
-        if (!localProjects.length) {
-            const disableButtons = document.querySelector("#current div").children;
+function disableButtons() {
+    const disableButtons = document.querySelector("#current div").children;
             for (const button of disableButtons){
                 button.disabled = true;
             }
             projectH2.textContent = "There are no projects";
             projectH2.setAttribute("data-id", id);
+}
+
+function updateProjectH2(id, name) {
+    const projectH2 = document.querySelector("#current-project");
+    projectH2.textContent = name;
+    projectH2.setAttribute("data-id", id);
+}
+//loads the given project, the first one, or disables the buttons if no projects on local storage, changes h2 content and id
+function loadProjectDisplay(id="") {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+    //checks if we're loading a certain project, or just the default one(first one),
+    if (!id){
+        // if localStorage is empty, disable buttons that would cause issues, modify h2 to let user know there's no 
+        if (!localProjects.length) {
+            disableButtons();
             return;
         } 
         //loads first project on the list
@@ -89,18 +96,43 @@ function loadProjectDisplay(id="") {
             console.log(id);
         }
     } 
-
     //retrieve the project
     const projectLoading = localProjects[findProjectIndex(id)];
-    console.log(projectLoading);
-    projectH2.textContent = projectLoading.title;
-    projectH2.setAttribute("data-id", id);
-    console.log(projectLoading, typeof(projectLoading))
-
+    
     for (const todo of projectLoading.todos){
         loadTodoDisplay(todo);
     }
 
+}
+
+function addProjectButton(id, name) {
+    const projectsDiv = document.querySelector("#project-buttons");
+    const btnProject = document.createElement("button");
+    btnProject.classList.add("dashboard-button");
+    btnProject.textContent = name;
+    btnProject.setAttribute("data-id", id);
+    // append before add project button, might change if we add a scrollable div for projects
+    projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
+}
+
+function setInitialUi() {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+
+    if (!localProjects.length) {
+        disableButtons();
+    } else {
+        for (const project of localProjects){
+            addProjectButton(project.id, project.title);
+        }
+    
+        updateProjectH2(localProjects[0].id, localProjects[0].title);
+
+        for (const todo of localProjects[0].todos){
+            loadTodoDisplay(todo);
+        }
+    }
+    
+    
 }
 
 function addShowModalListeners() {
@@ -167,15 +199,8 @@ function addModalListeners() {
         
         if (nameInput.value) {
             const addProjectId = addProject(nameInput.value);
-            const projectsDiv = document.querySelector("#project-buttons");
 
-
-            const btnProject = document.createElement("button");
-            btnProject.classList.add("dashboard-button");
-            btnProject.textContent = nameInput.value;
-            btnProject.setAttribute("data-id", addProjectId);
-
-            projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
+            addProjectButton(addProjectId, nameInput.value);
 
             loadProjectDisplay(addProjectId)
 
@@ -212,4 +237,4 @@ function setInitialListeners() {
 
 
 
-export {setInitialListeners};
+export {setInitialListeners, setInitialUi};
