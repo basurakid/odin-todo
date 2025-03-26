@@ -8,6 +8,64 @@ function addGlobalEventListener(type, selector, parent = document, callback) {
     })
 }
 
+function loadTodoDisplay (todo) {
+    const todoLi = document.createElement("li");
+    todoLi.classList.add(`${todo.priority}-priority`, "todo");
+    todoLi.setAttribute("data-id", todo.id);
+    
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox";
+    todoLi.appendChild(checkbox);
+
+    const title = document.createElement("h3");
+    title.textContent = todo.title;
+    todoLi.appendChild(title);
+
+    const dueDate = document.createElement("p");
+    dueDate.textContent = format(new Date(todo.dueDate), "dd-MM-yyyy");
+    todoLi.appendChild(dueDate);
+
+    const showMore = document.createElement("button");
+    showMore.classList.add("show-more");
+    showMore.textContent = "Show more";
+    todoLi.appendChild(showMore);
+
+
+    const deleteTodo = document.createElement("button");
+    deleteTodo.classList.add("close");
+    deleteTodo.textContent = "Delete";
+    todoLi.appendChild(deleteTodo);
+
+    const hiddenDiv = document.createElement("div");
+    hiddenDiv.classList("hidden");
+
+    const btnGroup = document.createElement("div");
+    btnGroup.classList.add("btn-group");
+
+    const lowBtn = document.createElement("button");
+    lowBtn.textContent = "Low";
+
+    const medBtn = document.createElement("button");
+    lowBtn.textContent = "Medium";
+
+    const hiBtn = document.createElement("button");
+    lowBtn.textContent = "High";
+
+    btnGroup.appendChild(lowBtn);
+    btnGroup.appendChild(medBtn);
+    btnGroup.appendChild(hiBtn);
+
+
+    hiddenDiv.appendChild(btnGroup);
+
+    const description = document.createElement("p");
+    description.textContent = todo.description;
+    description.classList.add("description");
+    hiddenDiv.appendChild(description);
+
+    todoLi.appendChild(hiddenDiv);
+}
+
 function loadProjectDisplay(id="") {
     const localProjects = localStorage.getItem("projects");
     const projectH2 = document.querySelector("#current-project");
@@ -32,8 +90,12 @@ function loadProjectDisplay(id="") {
 
     //retrieve the project
     const projectLoading = localStorage.getItem("projects")[findProjectIndex(id)];
-    projectH2.textContent = projectLoading.name;
-    
+    projectH2.textContent = projectLoading.title;
+    projectH2.setAttribute("data-id", id);
+
+    for (const todo of projectLoading.todos){
+        loadTodoDisplay(todo);
+    }
 
 }
 
@@ -105,8 +167,11 @@ function addModalListeners() {
             }
         }
 
-        const currentProjectId = document.querySelector(".current-view h2").dataset.id;
+        const currentProjectId = document.querySelector("#current-project").dataset.id;
         addTodo(todoData, currentProjectId);
+
+        loadTodoDisplay(todoData)
+
         todoModal.close();
     });
 

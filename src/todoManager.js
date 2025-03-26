@@ -24,13 +24,13 @@ function findProjectIndex(id="") {
     if (!id) {
         const id = document.querySelector("#current-project").dataset.id;
     }
-    
+
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
 }
 
 function addTodo (data) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
-    const newTodo = new Todo(data.title, data.description, new Date(data.get("due-date")), data.priority);
+    const newTodo = new Todo(data.title, data.description, new Date(data.dueDate), data.priority);
 
     localProjects[findProjectIndex()].todos.push(newTodo);
     localStorage.setItem("projects", JSON.stringify(localProjects));
