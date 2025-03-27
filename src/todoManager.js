@@ -2,12 +2,13 @@
 const projects = [];
 
 class Todo {
-    constructor(title, description="", dueDate, dateAdded, priority){
+    constructor(title, description="", dueDate, dateAdded, priority, done="false"){
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.done = done;
     }
 }
 
@@ -22,9 +23,8 @@ class Project {
 //find index of a given project, id can be passed onto it, or it can retrieve it from the h2
 function findProjectIndex(id="") {
     if (!id) {
-        const id = document.querySelector("#current-project").dataset.id;
+        id = document.querySelector("#current-project").dataset.id;
     }
-
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
 }
 

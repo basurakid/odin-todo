@@ -1,4 +1,5 @@
 import { addProject, deleteProject, addTodo, findProjectIndex} from "./todoManager";
+import {format} from "date-fns";
 
 function addGlobalEventListener(type, selector, parent = document, callback) {
     parent.addEventListener(type, e => {
@@ -16,6 +17,9 @@ function loadTodoDisplay(todo) {
     const checkbox = document.createElement("input")
     checkbox.type = "checkbox";
     todoLi.appendChild(checkbox);
+    if (todo.done) {
+
+    }
 
     const title = document.createElement("h3");
     title.textContent = todo.title;
@@ -37,7 +41,7 @@ function loadTodoDisplay(todo) {
     todoLi.appendChild(deleteTodo);
 
     const hiddenDiv = document.createElement("div");
-    hiddenDiv.classList("hidden");
+    hiddenDiv.classList.add("hidden");
 
     const btnGroup = document.createElement("div");
     btnGroup.classList.add("btn-group");
@@ -185,6 +189,7 @@ function addModalListeners() {
         }
 
         const currentProjectId = document.querySelector("#current-project").dataset.id;
+        console.log(currentProjectId);
         addTodo(todoData, currentProjectId);
 
         loadTodoDisplay(todoData)
