@@ -1,4 +1,4 @@
-import { addProject, deleteProject, addTodo, findProjectIndex} from "./todoManager";
+import { addProject, deleteProject, addTodo, findProjectIndex, changeDoneStatus} from "./todoManager";
 import {format} from "date-fns";
 
 function addGlobalEventListener(type, selector, parent = document, callback) {
@@ -231,12 +231,25 @@ function addModalListeners() {
     });
 }
 
+function addTodoListeners() {
+    //add listener on checkbox to change todo done state
+    const todosContainer = document.querySelector("#todos-container");
+
+    addGlobalEventListener("change", "input[type='checkbox']", todosContainer, (e) =>{
+        const checkbox = e.target;
+        checkbox.parentElement.classList.toggle("done");
+
+        changeDoneStatus(checkbox.parentElement.dataset.id);
+    })
+}
+
 
 function setInitialListeners() {
     addModalListeners();
     addShowModalListeners();
 
     addDashboardListeners();
+    addTodoListeners();
 }
 
 

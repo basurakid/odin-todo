@@ -1,4 +1,3 @@
-
 const projects = [];
 
 class Todo {
@@ -26,6 +25,12 @@ function findProjectIndex(id="") {
         id = document.querySelector("#current-project").dataset.id;
     }
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
+}
+
+function findTodoIndex(id) {
+    const projectId = document.querySelector("#current-project").dataset.id;
+    const projectIndex = findProjectIndex(projectId);
+    return JSON.parse(localStorage.getItem("projects"))[projectIndex].todos.findIndex(p => p.id === id);
 }
 
 function addTodo(data) {
@@ -62,4 +67,21 @@ function deleteProject(id) {
 
 }
 
-export { Project, addProject, deleteProject, addTodo, findProjectIndex};
+function changeDoneStatus(id) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+
+    const projectIndex = findProjectIndex();
+    const todoIndex = findTodoIndex(id);
+
+    console.log("Before", localProjects[projectIndex].todos[todoIndex].done)
+
+    const doneState = localProjects[projectIndex].todos[todoIndex].done;
+    localProjects[projectIndex].todos[todoIndex].done = !doneState
+
+    console.log("After", localProjects[projectIndex].todos[todoIndex].done)
+
+
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
+export { Project, addProject, deleteProject, addTodo, findProjectIndex, changeDoneStatus};
