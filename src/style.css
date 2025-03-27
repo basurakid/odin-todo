@@ -303,6 +303,10 @@ button {
     text-align: justify;
 }
 
+.done {
+    opacity: 80%;
+}
+
 
 
 dialog {

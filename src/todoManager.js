@@ -2,7 +2,7 @@
 const projects = [];
 
 class Todo {
-    constructor(title, description="", dueDate, dateAdded, priority, done="false"){
+    constructor(title, description="", dueDate, dateAdded, priority, done=false){
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;

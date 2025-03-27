@@ -18,7 +18,8 @@ function loadTodoDisplay(todo) {
     checkbox.type = "checkbox";
     todoLi.appendChild(checkbox);
     if (todo.done) {
-
+        checkbox.checked = true;
+        todoLi.classList.add("done")
     }
 
     const title = document.createElement("h3");
@@ -42,24 +43,17 @@ function loadTodoDisplay(todo) {
 
     const hiddenDiv = document.createElement("div");
     hiddenDiv.classList.add("hidden");
-
     const btnGroup = document.createElement("div");
     btnGroup.classList.add("btn-group");
-
     const lowBtn = document.createElement("button");
     lowBtn.textContent = "Low";
-
     const medBtn = document.createElement("button");
     lowBtn.textContent = "Medium";
-
     const hiBtn = document.createElement("button");
-    lowBtn.textContent = "High";
-
+    lowBtn.textContent = "High"
     btnGroup.appendChild(lowBtn);
     btnGroup.appendChild(medBtn);
     btnGroup.appendChild(hiBtn);
-
-
     hiddenDiv.appendChild(btnGroup);
 
     const description = document.createElement("p");
@@ -68,6 +62,9 @@ function loadTodoDisplay(todo) {
     hiddenDiv.appendChild(description);
 
     todoLi.appendChild(hiddenDiv);
+    
+    const todosDiv = document.querySelector("#todos-container");
+    todosDiv.appendChild(todoLi);
 }
 
 function disableButtons() {
@@ -97,7 +94,6 @@ function loadProjectDisplay(id="") {
         //loads first project on the list
         else {
             id = localProjects[0].id;
-            console.log(id);
         }
     } 
     //retrieve the project
@@ -180,19 +176,17 @@ function addModalListeners() {
         event.preventDefault();
         const todoData = new FormData(todoForm);
 
-    
         for (const input of todoData.entries()) {
             if (input[0] !== "description" && !input[1]){
                     alert(`You must enter a value in the ${input[0]} field`);
                     return;
             }
         }
-
+        const todoObject = Object.fromEntries(todoData.entries());
         const currentProjectId = document.querySelector("#current-project").dataset.id;
-        console.log(currentProjectId);
-        addTodo(todoData, currentProjectId);
+        addTodo(todoObject, currentProjectId);
 
-        loadTodoDisplay(todoData)
+        loadTodoDisplay(todoObject);
 
         todoModal.close();
     });
@@ -226,7 +220,6 @@ function addModalListeners() {
             deleteProjectModal.close();
 
         } else {
-            console.log(deleteProjectModal);
             deleteProjectModal.close();
         }
     });
