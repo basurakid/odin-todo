@@ -230,7 +230,7 @@ button {
     border-bottom: 3px solid var(--blue);
 }
 
-.med-priority {
+.medium-priority {
     border-top: 3px solid var(--yellow);
     border-bottom: 3px solid var(--yellow);
 }

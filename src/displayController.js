@@ -190,6 +190,9 @@ function addModalListeners() {
 
         todoModal.close();
     });
+    todoModal.addEventListener("close", () => {
+        todoForm.reset();
+    })
 
     //add project modal button listener
     const addProjectModal = document.querySelector(".new-project-modal")
@@ -203,10 +206,13 @@ function addModalListeners() {
 
             loadProjectDisplay(addProjectId)
 
-            nameInput.value = "";
             addProjectModal.close();
         }
     });
+    addProjectModal.addEventListener("close", () => {
+        const nameInput = document.querySelector("#name");
+        nameInput.value = "";
+    })
 
     //add delete project listeners
     const deleteProjectModal = document.querySelector(".delete-project-modal");
