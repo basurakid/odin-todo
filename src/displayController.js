@@ -1,4 +1,4 @@
-import { addProject, deleteProject, addTodo, findProjectIndex, changeDoneStatus} from "./todoManager";
+import { addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle} from "./todoManager";
 import {format} from "date-fns";
 
 function addGlobalEventListener(type, selector, parent = document, callback) {
@@ -48,9 +48,9 @@ function loadTodoDisplay(todo) {
     const lowBtn = document.createElement("button");
     lowBtn.textContent = "Low";
     const medBtn = document.createElement("button");
-    lowBtn.textContent = "Medium";
+    medBtn.textContent = "Medium";
     const hiBtn = document.createElement("button");
-    lowBtn.textContent = "High"
+    hiBtn.textContent = "High"
     btnGroup.appendChild(lowBtn);
     btnGroup.appendChild(medBtn);
     btnGroup.appendChild(hiBtn);
@@ -79,8 +79,9 @@ function disableButtons() {
 function updateProjectH2(id, name) {
     const projectH2 = document.querySelector("#current-project");
     projectH2.textContent = name;
-    projectH2.setAttribute("data-id", id);
+    projectH2.dataset.id = id;
 }
+
 //loads the given project, the first one, or disables the buttons if no projects on local storage, changes h2 content and id
 function loadProjectDisplay(id="") {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
@@ -98,6 +99,11 @@ function loadProjectDisplay(id="") {
     } 
     //retrieve the project
     const projectLoading = localProjects[findProjectIndex(id)];
+
+    updateProjectH2(id, projectLoading.title);
+
+    const todosDiv = document.querySelector("#todos-container");
+    todosDiv.textContent = ""
     
     for (const todo of projectLoading.todos){
         loadTodoDisplay(todo);
@@ -108,11 +114,11 @@ function loadProjectDisplay(id="") {
 function addProjectButton(id, name) {
     const projectsDiv = document.querySelector("#project-buttons");
     const btnProject = document.createElement("button");
-    btnProject.classList.add("dashboard-button");
+    btnProject.classList.add("dashboard-button", "project-button");
     btnProject.textContent = name;
     btnProject.setAttribute("data-id", id);
     // append before add project button, might change if we add a scrollable div for projects
-    projectsDiv.insertBefore(btnProject, projectsDiv.lastElementChild);
+    projectsDiv.appendChild(btnProject);
 }
 
 function setInitialUi() {
@@ -161,9 +167,9 @@ function addDashboardListeners() {
     // add global listener
     const projectsDiv = document.querySelector("#project-buttons");
     addGlobalEventListener("click", ".project-button", projectsDiv, (e) => {
-        const currentProjectId = document.querySelector("#current h2").data.id;
-        if (e.target.data.id !== currentProjectId){
-            loadProjectDisplay(e.target.data.id);
+        const currentProjectId = document.querySelector("#current h2").dataset.id;
+        if (e.target.dataset.id !== currentProjectId){
+            loadProjectDisplay(e.target.dataset.id);
         }
     })
 }
@@ -204,7 +210,7 @@ function addModalListeners() {
 
             addProjectButton(addProjectId, nameInput.value);
 
-            loadProjectDisplay(addProjectId)
+            loadProjectDisplay(addProjectId);
 
             addProjectModal.close();
         }
@@ -220,7 +226,8 @@ function addModalListeners() {
         if (e.target.textContent === "Yes") {
             const deleteProjectId = document.querySelector("#current-project").dataset.id;
             deleteProject(deleteProjectId);
-            
+
+            const projectsDiv = document.querySelector("#projects-buttons");
             projectsDiv.querySelector(`.project-button[data-id="${id}"]`).remove();
             loadProjectDisplay();
             deleteProjectModal.close();
@@ -239,8 +246,58 @@ function addTodoListeners() {
         const checkbox = e.target;
         checkbox.parentElement.classList.toggle("done");
 
-        changeDoneStatus(checkbox.parentElement.dataset.id);
+        editDoneStatus(checkbox.parentElement.dataset.id);
     })
+
+    addGlobalEventListener("click", ".close", todosContainer, (e) =>{
+        deleteTodo(e.target.parentElement.dataset.id);
+        e.target.parentElement.remove();
+    })
+
+    addGlobalEventListener("click", ".show-more", todosContainer, (e) =>{
+        const hiddenDiv = e.target.parentElement.querySelector(".hidden");
+        e.target.classList.toggle("show-less")
+        hiddenDiv.classList.toggle("visible");
+    })
+
+    addGlobalEventListener("click", "h3", todosContainer, (e) => {
+        const todoTitle = e.target;
+        const todoInput = document.createElement("input");
+        todoInput.type = "text";
+        todoInput.value = todoTitle.textContent;
+        todoInput.classList.add("title-input");
+
+        todoTitle.replaceWith(todoInput);
+        todoInput.focus();
+
+        todoInput.addEventListener("blur", saveTitle);
+        todoInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter"){
+                saveTitle();
+                editTitle(e.target.parentElement.dataset.id, todoInput.value);
+            }
+        })
+
+        function saveTitle() {
+            const editedH3 = document.createElement("h3");
+            editedH3.textContent = todoInput.value.trim() || "Untitled";
+            const replaceInput = document.querySelector(".title-input");
+            setTimeout(() => {
+                replaceInput.replaceWith(editedH3);
+            }, 0);
+        }
+    })
+
+    addGlobalEventListener("click", "li > p", todosContainer, (e) => {
+        const todoDate = e.target;
+        const todoInput = document.createElement("input");
+        todoInput.type = "date";
+        todoInput.classList.add("date-input");
+
+        todoDate.replaceWith(todoInput);
+        todoDate.focus();
+    })
+
 }
 
 

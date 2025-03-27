@@ -93,6 +93,7 @@ button {
     font-family: inherit;
     font-size: 1.2rem;
 
+
     direction: ltr;
 
 }
@@ -102,8 +103,8 @@ button {
 }
 
 .dashboard-button:hover {
-    color: var(--yellow);
     font-weight: 600;
+    padding-left: 1rem;
 }
 
 .github {
@@ -156,9 +157,11 @@ button {
     margin-left: 2rem;
 }
 
-.delete-project:hover {
+.delete-project:not(:disabled):hover {
     color: var(--red)
 }
+
+
 
 .todos-container {
     margin: 1rem 5rem;
@@ -212,17 +215,11 @@ button {
 
 .show-more {
     background: url(Icons/chevron-down-svgrepo-com.svg) center / contain no-repeat;
+    transition: transform 1s;
 }
 
 .show-less {
-    background: url(Icons/chevron-up-svgrepo-com.svg) center / contain no-repeat;
-}
-
-.description {
-    grid-column-start: 2;
-    grid-column-end: 4;
-    margin-left: 0.5rem;
-    font-size: 0.9rem;
+    transform: rotate(-180deg);
 }
 
 .low-priority {
@@ -246,7 +243,7 @@ button {
     padding: 1rem 3rem
 }
 
-.active {
+.visible {
     display: flex;
     flex-direction: column;
 }
@@ -299,13 +296,21 @@ button {
 }
 
 .description {
-    margin-top: 1rem;
+    margin: 2rem 1rem 0.5rem 1rem;
+    border-radius: 5px;
     text-align: justify;
+
+
+
+    font-size: 0.9rem;
 }
 
 .done {
-    opacity: 50%;
+    border-top: 3px dashed #b5b5b5;
+    border-bottom: 3px dashed #b5b5b5;
+    color: #9c9c9c;
 }
+
 
 
 
@@ -350,6 +355,10 @@ dialog p {
     gap: 1rem;
 }
 
+.new-project-modal {
+    justify-items: center;
+}
+
 .new-project-modal * {
     display: block;
 }
@@ -365,5 +374,13 @@ dialog p {
 .delete-project-modal :last-child {
     margin-left: 1rem;
     background-color: var(--red);
+}
+
+.title-input {
+    height: 1.2rem;
+    max-width: 300px;
+    font-size: 1.2rem;
+    font-family: inherit;
+    background-color: #E0E0E0;
 }
 

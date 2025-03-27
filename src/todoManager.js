@@ -43,6 +43,14 @@ function addTodo(data) {
     return newTodo.id;
 }
 
+function deleteTodo(id) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+
+    localProjects[findProjectIndex()].todos.splice([findTodoIndex(id)], 1)
+    
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
 function addProject(name) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
     const newProject = new Project(name);
@@ -60,28 +68,28 @@ function deleteProject(id) {
 
     if (deleteIndex !== -1) {
         localProjects.splice(deleteIndex, 1);
-        localStorage.setItem("projects", JSON.stringify(parsedProjects));  
+        localStorage.setItem("projects", JSON.stringify(localProjects));  
     } else {
         alert(`Project with id ${id} not found.`);
     }
 
 }
 
-function changeDoneStatus(id) {
+function editDoneStatus(id) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
 
     const projectIndex = findProjectIndex();
     const todoIndex = findTodoIndex(id);
-
-    console.log("Before", localProjects[projectIndex].todos[todoIndex].done)
-
     const doneState = localProjects[projectIndex].todos[todoIndex].done;
-    localProjects[projectIndex].todos[todoIndex].done = !doneState
-
-    console.log("After", localProjects[projectIndex].todos[todoIndex].done)
-
-
+    localProjects[projectIndex].todos[todoIndex].done = !doneState;
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
-export { Project, addProject, deleteProject, addTodo, findProjectIndex, changeDoneStatus};
+function editTitle(id, editedTitle) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+
+    localProjects[findProjectIndex()].todos[findTodoIndex(id)].title = editedTitle.trim() || "Untitled";
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
+export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle};
