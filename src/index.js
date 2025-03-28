@@ -1,5 +1,5 @@
 import "./style.css";
-import {setInitialListeners, setInitialUi} from "./displayController.js";
+import {setInitialListeners, loadProjectDisplay} from "./displayController.js";
 import {Project, addProject, deleteProject, addTodo} from "./todoManager.js";
 
 if (!localStorage.getItem("projects")) {
@@ -12,7 +12,6 @@ if (!localStorage.getItem("projects")) {
 
 
 setInitialListeners();
-setInitialUi();
-
+loadProjectDisplay("", true);
 
 

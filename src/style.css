@@ -86,7 +86,7 @@ button {
     background-color: transparent;
     border: 0px solid;
 
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
 
     color: var(--white);
     text-align: start;
@@ -159,6 +159,10 @@ button {
 
 .delete-project:not(:disabled):hover {
     color: var(--red)
+}
+
+button:disabled {
+    cursor: not-allowed;
 }
 
 
