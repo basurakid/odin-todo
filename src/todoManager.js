@@ -36,9 +36,11 @@ function findProjectIndex(id="") {
     return JSON.parse(localStorage.getItem("projects")).findIndex(p => p.id === id);
 }
 
-function findTodoIndex(id) {
-    const projectId = document.querySelector("#current-project").dataset.id;
-    const projectIndex = findProjectIndex(projectId);
+function findTodoIndex(id, projectIndex) {
+    if (!projectIndex) {
+        const projectId = document.querySelector("#current-project").dataset.id;
+        findProjectIndex(projectId);
+    }
     return JSON.parse(localStorage.getItem("projects"))[projectIndex].todos.findIndex(p => p.id === id);
 }
 
@@ -68,7 +70,7 @@ function deleteProject(id) {
 
 function addTodo(data) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
-    if (data.priority !== "high" || data.priority !== "medium" || data.priority !== "low"){
+    if (!["high", "medium", "low"].includes(data.priority)){
         data.priority = "medium";
     }
     const newTodo = new Todo(data.title, data.description, new Date(data.dueDate), data.priority);
@@ -80,29 +82,18 @@ function addTodo(data) {
     return newTodo.id;
 }
 
-function deleteTodo(id, projectId = "") {
+function deleteTodo(projectId = "", id) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    const projectIndex = findProjectIndex(projectId);
 
-    if (projectId) {
-        localProjects[findProjectIndex(projectId)].todos.splice([findTodoIndex(id)], 1)
-    }
-    else {
-        localProjects[findProjectIndex()].todos.splice([findTodoIndex(id)], 1)
-    }
-    
-    
+    localProjects[projectIndex].todos.splice([findTodoIndex(id, projectIndex)], 1)
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
 function editDoneStatus(projectId = "", id) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
 
-    if (!projectId) {
-        const projectIndex = findProjectIndex();
-    }
-    else {
-        const projectIndex = findProjectIndex(projectId);
-    }
+    const projectIndex = findProjectIndex(projectId);
     const todoIndex = findTodoIndex(id);
     const doneState = localProjects[projectIndex].todos[todoIndex].done;
     localProjects[projectIndex].todos[todoIndex].done = !doneState;
@@ -111,51 +102,39 @@ function editDoneStatus(projectId = "", id) {
 
 function editTitle( projectId = "", id, editedTitle) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    const projectIndex = findProjectIndex(projectId);
 
-    if (projectId) {
-        localProjects[findProjectIndex(projectId)].todos[findTodoIndex(id)].title = editedTitle.trim() || "Untitled";
-    }
-    else {
-        localProjects[findProjectIndex()].todos[findTodoIndex(id)].title = editedTitle.trim() || "Untitled";
-    }
-
+    localProjects[projectIndex].todos[findTodoIndex(id, projectIndex)].title = editedTitle.trim() || "Untitled";
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
 function editDate(projectId = "", id, editedDate) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    const projectIndex = findProjectIndex(projectId);
 
-    if (projectId) {
-        localProjects[findProjectIndex(projectId)].todos[findTodoIndex(id)].dueDate = new Date(editedDate);
-    }
-    else {
-        localProjects[findProjectIndex()].todos[findTodoIndex(id)].dueDate = new Date(editedDate);
+    if (!editedDate) {
+        editedDate = new Date();
     }
 
+    localProjects[projectIndex].todos[findTodoIndex(id, projectIndex)].dueDate = new Date(editedDate);
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
 function editPriority(projectId = "", id, editedPriority) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    const projectIndex = findProjectIndex(projectId);
 
-    if (projectId) {
-        localProjects[findProjectIndex(projectId)].todos[findTodoIndex(id)].priority = editPriority;
-    } 
-    else {
-        localProjects[findProjectIndex()].todos[findTodoIndex(id)].priority = editedPriority;
-    }
+
+    localProjects[projectIndex].todos[findTodoIndex(id, projectIndex)].priority = editedPriority;
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
 function editDescription(projectId = "", id, editedDescription) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    const projectIndex = findProjectIndex(projectId);
+
     
-    if (projectId) {
-        localProjects[findProjectIndex(projectId)].todos[findTodoIndex(id)].description = editedDescription.trim() || "";
-    }
-    else {
-        localProjects[findProjectIndex()].todos[findTodoIndex(id)].description = editedDescription.trim() || "";
-    }
+    localProjects[projectIndex].todos[findTodoIndex(id, projectIndex)].description = editedDescription.trim() || "";
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
@@ -176,7 +155,7 @@ function getAllTodos() {
 
 function sortTodos(sortBy) {
     const unsortedTodos = getAllTodos();
-    
+    console.log(unsortedTodos);
     if (unsortedTodos){
         if (sortBy === "all-todos"){
             return unsortedTodos;
@@ -194,7 +173,11 @@ function sortTodos(sortBy) {
             const sortedTodos = unsortedTodos.filter((todo) => todo.todo.priority === "high");
             return sortedTodos;
         }
+    } else {
+        return false;
     }
+    
+    
     
 }
 
