@@ -376,11 +376,19 @@ dialog p {
     background-color: var(--red);
 }
 
-.title-input {
+li input {
     height: 1.2rem;
+    background-color: #E0E0E0;
+    font-family: inherit;
+}
+
+.title-input {
     max-width: 300px;
     font-size: 1.2rem;
-    font-family: inherit;
-    background-color: #E0E0E0;
+}
+
+.date-input {
+    max-width: 110px;
+    height: 1.2rem;
 }
 

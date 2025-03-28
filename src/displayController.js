@@ -1,4 +1,4 @@
-import { addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle} from "./todoManager";
+import { addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate} from "./todoManager";
 import {format} from "date-fns";
 
 function addGlobalEventListener(type, selector, parent = document, callback) {
@@ -270,7 +270,7 @@ function addTodoListeners() {
         todoTitle.replaceWith(todoInput);
         todoInput.focus();
 
-        todoInput.addEventListener("blur", saveTitle);
+        todoInput.addEventListener("blur", () => {saveTitle(); editTitle(e.target.parentElement.dataset.id, todoInput.value)});
         todoInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter"){
                 saveTitle();
@@ -279,11 +279,11 @@ function addTodoListeners() {
         })
 
         function saveTitle() {
-            const editedH3 = document.createElement("h3");
-            editedH3.textContent = todoInput.value.trim() || "Untitled";
+            const editedTitle = document.createElement("h3");
+            editedTitle.textContent = todoInput.value.trim() || "Untitled";
             const replaceInput = document.querySelector(".title-input");
             setTimeout(() => {
-                replaceInput.replaceWith(editedH3);
+                replaceInput.replaceWith(editedTitle);
             }, 0);
         }
     })
@@ -296,6 +296,27 @@ function addTodoListeners() {
 
         todoDate.replaceWith(todoInput);
         todoDate.focus();
+
+        todoInput.addEventListener("blur", (e) => {
+            saveDate(); 
+            editDate(e.target.parentElement.dataset.id, e.target.value)
+        });
+        todoInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter"){
+                e.preventDefault()
+                saveDate();
+                editDate(e.target.parentElement.dataset.id, e.value);
+            }
+        })
+
+        function saveDate() {
+            const editedDate = document.createElement("p");
+            editedDate.textContent = format(new Date(todoInput.value), "dd-MM-yyyy"); 
+            const replaceInput = document.querySelector(".date-input");
+            setTimeout(() => {
+                replaceInput.replaceWith(editedDate);
+            }, 0);
+        }
     })
 
 }

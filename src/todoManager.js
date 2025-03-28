@@ -92,4 +92,11 @@ function editTitle(id, editedTitle) {
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
-export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle};
+function editDate(id, editedDate) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+
+    localProjects[findProjectIndex()].todos[findTodoIndex(id)].dueDate = new Date(editedDate);
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
+export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate};
