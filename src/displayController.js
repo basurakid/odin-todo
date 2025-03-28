@@ -1,4 +1,4 @@
-import { addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate} from "./todoManager";
+import { addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate, editPriority, editDescription} from "./todoManager";
 import {format} from "date-fns";
 
 function addGlobalEventListener(type, selector, parent = document, callback) {
@@ -46,10 +46,13 @@ function loadTodoDisplay(todo) {
     const btnGroup = document.createElement("div");
     btnGroup.classList.add("btn-group");
     const lowBtn = document.createElement("button");
+    lowBtn.value = "low";
     lowBtn.textContent = "Low";
     const medBtn = document.createElement("button");
+    medBtn.value = "medium";
     medBtn.textContent = "Medium";
     const hiBtn = document.createElement("button");
+    hiBtn.value = "high";
     hiBtn.textContent = "High"
     btnGroup.appendChild(lowBtn);
     btnGroup.appendChild(medBtn);
@@ -163,6 +166,9 @@ function addDashboardListeners() {
     // TODO
     // set the sorting all todos buttons
     const sortBtns = document.querySelector("#sort-buttons");
+    addGlobalEventListener("click", ".sort-button", sortBtns, () => {
+        const unsortedTodos = "";
+    })
 
     // add global listener
     const projectsDiv = document.querySelector("#project-buttons");
@@ -260,6 +266,7 @@ function addTodoListeners() {
         hiddenDiv.classList.toggle("visible");
     })
 
+    //live title editing
     addGlobalEventListener("click", "h3", todosContainer, (e) => {
         const todoTitle = e.target;
         const todoInput = document.createElement("input");
@@ -270,7 +277,8 @@ function addTodoListeners() {
         todoTitle.replaceWith(todoInput);
         todoInput.focus();
 
-        todoInput.addEventListener("blur", () => {saveTitle(); editTitle(e.target.parentElement.dataset.id, todoInput.value)});
+        console.log(e.target.parentElement)
+        todoInput.addEventListener("blur", (e) => {saveTitle(); editTitle(e.target.parentElement.dataset.id, todoInput.value)});
         todoInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter"){
                 saveTitle();
@@ -288,6 +296,7 @@ function addTodoListeners() {
         }
     })
 
+    //live date editing
     addGlobalEventListener("click", "li > p", todosContainer, (e) => {
         const todoDate = e.target;
         const todoInput = document.createElement("input");
@@ -295,15 +304,15 @@ function addTodoListeners() {
         todoInput.classList.add("date-input");
 
         todoDate.replaceWith(todoInput);
-        todoDate.focus();
+        todoInput.focus();
 
         todoInput.addEventListener("blur", (e) => {
             saveDate(); 
-            editDate(e.target.parentElement.dataset.id, e.target.value)
+            editDate(e.target.parentElement.dataset.id, e.target.value);
         });
         todoInput.addEventListener("keydown", (e) => {
             if (e.key === "Enter"){
-                e.preventDefault()
+                e.preventDefault();
                 saveDate();
                 editDate(e.target.parentElement.dataset.id, e.value);
             }
@@ -319,6 +328,47 @@ function addTodoListeners() {
         }
     })
 
+    addGlobalEventListener("click", ".btn-group > button", todosContainer, (e) => {
+        if (e.target.value === "high" || e.target.value === "medium" || e.target.value === "low") {
+            editPriority(e.target.closest("li").dataset.id, e.target.value);
+            e.target.closest("li").className = "";
+
+            e.target.closest("li").classList.add(`${e.target.value}-priority`, "todo") ;
+        }
+    })
+
+    addGlobalEventListener("click", ".hidden p", todosContainer, (e) => {
+        const todoDescription = e.target;
+        const todoTextarea = document.createElement("textarea");
+        todoTextarea.classList.add("description-input");
+        todoTextarea.value = todoDescription.textContent;
+
+        todoDescription.replaceWith(todoTextarea);
+        todoTextarea.focus();
+
+        todoTextarea.addEventListener("blur", (e) => {
+            saveDescription(); 
+            editDescription(e.target.closest("li").dataset.id, e.target.value);
+        })
+
+        todoTextarea.addEventListener("keydown", (e) => {
+            if (e.key === "Enter"){
+                saveDescription(); 
+                editDescription(e.target.closest("li").dataset.id, e.target.value);
+            }
+        })
+
+        function saveDescription() {
+            const editedDescription = document.createElement("p");
+            editedDescription.classList.add("description");
+            editedDescription.textContent = todoTextarea.value.trim() || "";
+            const replaceInput = document.querySelector(".description-input");
+            setTimeout(() => {
+                replaceInput.replaceWith(editedDescription);
+            }, 0);
+        }
+    })
+    
 }
 
 

@@ -299,9 +299,6 @@ button {
     margin: 2rem 1rem 0.5rem 1rem;
     border-radius: 5px;
     text-align: justify;
-
-
-
     font-size: 0.9rem;
 }
 
@@ -310,9 +307,6 @@ button {
     border-bottom: 3px dashed #b5b5b5;
     color: #9c9c9c;
 }
-
-
-
 
 dialog {
     justify-self: center;
@@ -392,3 +386,9 @@ li input {
     height: 1.2rem;
 }
 
+.description-input {
+    margin: 2rem 1rem 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
+    background-color: #E0E0E0;
+    resize: vertical;    
+}

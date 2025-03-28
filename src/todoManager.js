@@ -35,7 +35,11 @@ function findTodoIndex(id) {
 
 function addTodo(data) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
+    if (data.priority !== "high" || data.priority !== "medium" || data.priority !== "low"){
+        data.priority = "medium";
+    }
     const newTodo = new Todo(data.title, data.description, new Date(data.dueDate), data.priority);
+
 
     localProjects[findProjectIndex()].todos.push(newTodo);
     localStorage.setItem("projects", JSON.stringify(localProjects));
@@ -99,4 +103,16 @@ function editDate(id, editedDate) {
     localStorage.setItem("projects", JSON.stringify(localProjects));
 }
 
-export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate};
+function editPriority(id, editedPriority) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+    localProjects[findProjectIndex()].todos[findTodoIndex(id)].priority = editedPriority;
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
+function editDescription(id, editedDescription) {
+    const localProjects = JSON.parse(localStorage.getItem("projects"));
+    localProjects[findProjectIndex()].todos[findTodoIndex(id)].description = editedDescription.trim() || "";
+    localStorage.setItem("projects", JSON.stringify(localProjects));
+}
+
+export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate, editPriority, editDescription};
