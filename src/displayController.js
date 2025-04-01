@@ -19,7 +19,6 @@ function disableButtons() {
 function enableButtons() {
     const enableButtons = document.querySelector("#current div").children;
             for (const button of enableButtons){
-                console.log(button);
                 button.disabled = false;
             }
 }
@@ -34,6 +33,9 @@ function loadTodoDisplay(todo, projectId="") {
     const todoLi = document.createElement("li");
     todoLi.classList.add(`${todo.priority}-priority`, "todo");
     todoLi.setAttribute("data-id", todo.id);
+    if (!projectId){
+        projectId = document.querySelector("#current-project").dataset.id;
+    }
     todoLi.setAttribute("data-project-id", projectId);
     
     const checkbox = document.createElement("input")
@@ -54,14 +56,24 @@ function loadTodoDisplay(todo, projectId="") {
     todoLi.appendChild(dueDate);
 
     const showMore = document.createElement("button");
+    const showMoreText = document.createElement("span");
+
+    showMoreText.textContent = "Show todo details";
+    showMoreText.classList.add("sr-only");
+
+    showMore.appendChild(showMoreText);
     showMore.classList.add("show-more");
-    showMore.textContent = "Show more";
     todoLi.appendChild(showMore);
 
 
     const deleteTodo = document.createElement("button");
+    const deleteText = document.createElement("span");
+
+    deleteText.classList.add("sr-only");
+    deleteText.textContent = "Delete todo";
+
+    deleteTodo.appendChild(deleteText);
     deleteTodo.classList.add("close");
-    deleteTodo.textContent = "Delete";
     todoLi.appendChild(deleteTodo);
 
     const hiddenDiv = document.createElement("div");
@@ -88,9 +100,14 @@ function loadTodoDisplay(todo, projectId="") {
     hiddenDiv.appendChild(description);
 
     todoLi.appendChild(hiddenDiv);
+    todoLi.classList.add("animation-start");
+
     
     const todosDiv = document.querySelector("#todos-container");
     todosDiv.appendChild(todoLi);
+
+    todosDiv.offsetWidth;
+
 }
 
 //loads the given project, the first one, or disables the buttons if no projects on local storage, changes h2 content and id
@@ -115,19 +132,26 @@ function loadProjectDisplay(id="", isInitialSetting=false) {
         }
     }
     enableButtons();
-
     const projectLoading = localProjects[findProjectIndex(id)];
-
     updateProjectH2(id, projectLoading.title);
+
+    const sortBySelection = document.querySelector("#sort-by").value;
+    const sortedTodos = sortTodos(sortBySelection);
 
     const todosDiv = document.querySelector("#todos-container");
     todosDiv.textContent = "";
 
-    for (const todo of projectLoading.todos){
+    for (const todo of sortedTodos){
         loadTodoDisplay(todo, id);
     }
 
+    const allTodos = [...document.querySelector("#todos-container").children];
 
+    allTodos.forEach((todo, index) => {
+        setTimeout(() => {
+            todo.classList.add("animation-finished");
+        }, index * 50);
+    });
 }
 
 function loadSortedDisplay(sortedTodos, sortBy) {
@@ -139,17 +163,28 @@ function loadSortedDisplay(sortedTodos, sortBy) {
 
     for (const todo of sortedTodos) {
         loadTodoDisplay(todo.todo, todo.projectId);
-    }    
+    }
+    
+    const allTodos = [...document.querySelector("#todos-container").children];
+
+    allTodos.forEach((todo, index) => {
+        setTimeout(() => {
+            todo.classList.add("animation-finished");
+        }, index * 50);
+    });
 }
 
 function addProjectButton(id, name) {
     const projectsDiv = document.querySelector("#project-buttons");
     const btnProject = document.createElement("button");
-    btnProject.classList.add("dashboard-button", "project-button");
+    btnProject.classList.add("dashboard-button", "project-button", "animation-start");
     btnProject.textContent = name;
     btnProject.setAttribute("data-id", id);
     // append before add project button, might change if we add a scrollable div for projects
     projectsDiv.appendChild(btnProject);
+    projectsDiv.offsetWidth;
+
+    btnProject.classList.add("animation-finished");
 }
 
 
@@ -177,7 +212,6 @@ function addDashboardListeners() {
     const sortBtns = document.querySelector("#sort-buttons");
     addGlobalEventListener("click", ".sort-button", sortBtns, (e) => {
         const sortedTodos = sortTodos(e.target.value);
-        console.log(sortedTodos);
         
         if (sortedTodos){
             loadSortedDisplay(sortedTodos, e.target.textContent);
@@ -213,7 +247,7 @@ function addModalListeners() {
         const currentProjectId = document.querySelector("#current-project").dataset.id;
         addTodo(todoObject, currentProjectId);
 
-        loadTodoDisplay(todoObject, currentProjectId);
+        loadProjectDisplay(currentProjectId);
 
         todoModal.close();
     });
@@ -260,20 +294,31 @@ function addModalListeners() {
     });
 }
 
+function addSortProjectListener() {
+    const sortSelect = document.querySelector("#sort-by");
+    sortSelect.addEventListener("change", (e) => {
+        const currentProjectId = document.querySelector("#current-project").dataset.id;
+        
+        loadProjectDisplay(currentProjectId)
+    })
+}
+
 function addTodoListeners() {
     //add listener on checkbox to change todo done state
     const todosContainer = document.querySelector("#todos-container");
     //checkbox
     addGlobalEventListener("change", "input[type='checkbox']", todosContainer, (e) =>{
         const todo = e.target.parentElement;
+
         todo.classList.toggle("done");
         editDoneStatus(todo.dataset.projectId, todo.dataset.id);
     })
     //delete todo
     addGlobalEventListener("click", ".close", todosContainer, (e) =>{
         const todo = e.target.parentElement;
+        todo.classList.add("animation-exit");
         deleteTodo(todo.dataset.projectId, todo.dataset.id)
-        todo.remove();
+        setTimeout(() =>{todo.remove()}, 300);
     })
     //expand div
     addGlobalEventListener("click", ".show-more", todosContainer, (e) =>{
@@ -297,8 +342,6 @@ function addTodoListeners() {
 
         todoInput.addEventListener("blur", (e) => {
             saveTitle();
-            console.log(todo);
-            console.log(todo.dataset.projectId);
             editTitle(todo.dataset.projectId, todo.dataset.id, e.target.value);
         });
 
@@ -345,6 +388,7 @@ function addTodoListeners() {
         function saveDate() {
             const editedDate = document.createElement("p");
             const date = todoInput.value ? todoInput.value : new Date();
+            editedDate.classList.add("due-date");
             editedDate.textContent = format(new Date(date), "dd-MM-yyyy"); 
             const replaceInput = document.querySelector(".date-input");
             setTimeout(() => {
@@ -402,8 +446,8 @@ function addTodoListeners() {
 function setInitialListeners() {
     addModalListeners();
     addShowModalListeners();
-
     addDashboardListeners();
+    addSortProjectListener();
     addTodoListeners();
 }
 

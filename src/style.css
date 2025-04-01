@@ -29,6 +29,18 @@ button {
     cursor: pointer;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
 .sidebar {
     background-color: var(--blue);
 }
@@ -76,7 +88,7 @@ button {
 }
 
 #project-buttons {
-    max-height: 55vh;
+    max-height: 60vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--white) var(--blue);
@@ -93,9 +105,20 @@ button {
     font-family: inherit;
     font-size: 1.2rem;
 
-
     direction: ltr;
 
+    transition: all 0.5s;
+}
+
+.project-button.animation-start {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.project-button.animation-finished {
+    opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
 .add-button{
@@ -109,6 +132,7 @@ button {
 
 .github {
     margin-top: auto;
+    padding-top: 0.5rem;
 
     color: var(--white);
     font-size: 1rem;
@@ -123,7 +147,6 @@ button {
 .github svg{
     width: 50px;
     margin-right: 0.5rem;
-    margin-top: 1rem;
 }
 
 .content {
@@ -145,16 +168,42 @@ button {
     border-bottom: 3px solid var(--black);
 }
 
+.current-view > div {
+    align-items: center;
+    display: flex;
+    gap: 2rem;
+}
+
 .current-view button {
     background-color: transparent;
     border: 0px solid transparent;
     font-family: inherit;
     font-size: 1.2rem;
     font-weight: 600;
+    transition: all 0.4s;
 }
 
-.create-todo {
-    margin-left: 2rem;
+.current-view button:not(:disabled):hover {
+    transform: scale(95%);
+}
+
+.current-view label {
+    display: none;
+}
+
+.current-view select {
+    background-color: var(--white);
+    height: 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 0;
+    border-bottom: 2px solid var(--black);
+}
+
+.current-view select:not(:disabled):hover {
+    border-bottom: 2px solid var(--blue);
+    border-top: 2px solid var(--yellow);
+
 }
 
 .delete-project:not(:disabled):hover {
@@ -163,6 +212,10 @@ button {
 
 button:disabled {
     cursor: not-allowed;
+}
+
+.create-todo:not(:disabled):hover {
+    color:var(--blue);
 }
 
 
@@ -177,6 +230,10 @@ button:disabled {
     padding: 0 1rem;
 }
 
+.todos-container li:first-child {
+    margin-top: 0.2rem;
+}
+
 .todo {
     padding: 0.4rem 0.5rem;
     margin-bottom: 1rem;
@@ -188,6 +245,28 @@ button:disabled {
     gap: 0.5rem;
     align-items: center;
 
+    transition: all 0.5s;
+}
+
+.todo.animation-start {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.todo.animation-finished {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.todo.animation-exit {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+}
+
+.todo:hover {
+    transform: scale(102%);
 }
 
 .todo h3 {
@@ -209,8 +288,13 @@ button:disabled {
     border: 0px solid transparent;
     height: 40px;
     width: 40px;
-    color: transparent;
+    color: none;
 }
+
+.todo h3, .todo p {
+    cursor: pointer;
+}
+
 
 .due-date {
     text-align: end;
@@ -220,15 +304,29 @@ button:disabled {
 
 .close {
     background: url(Icons/close-svgrepo-com.svg) center / contain no-repeat;
+    transition: transform 0.5s;
 }
 
 .show-more {
     background: url(Icons/chevron-down-svgrepo-com.svg) center / contain no-repeat;
-    transition: transform 1s;
+    transition: transform 0.5s;
 }
 
-.show-less {
+.show-more:hover {
+    transform: scale(0.85);
+}
+
+.show-more.show-less {
     transform: rotate(-180deg);
+
+}
+
+.show-more.show-less:hover {
+    transform: scale(0.85) rotate(-180deg);
+}
+
+.close:hover {
+    transform: scale(0.85);
 }
 
 .low-priority {
@@ -249,7 +347,7 @@ button:disabled {
 .hidden {
     display: none;
     width: 62.5vw;
-    padding: 1rem 3rem
+    padding: 0 3rem
 }
 
 .visible {
@@ -305,10 +403,16 @@ button:disabled {
 }
 
 .description {
-    margin: 2rem 1rem 0.5rem 1rem;
-    border-radius: 5px;
+    margin: 1rem 1rem 0.5rem 1rem;
     text-align: justify;
     font-size: 0.9rem;
+}
+
+.description:empty::before {
+    content: "Add description...";
+    color: #999;
+    font-style: italic;
+    font-size: 0.8rem;
 }
 
 .done {
@@ -393,10 +497,11 @@ li input {
 .date-input {
     max-width: 110px;
     height: 1.2rem;
+    margin-left: auto;
 }
 
 .description-input {
-    margin: 2rem 1rem 0.5rem 1rem;
+    margin: 1rem 1rem 0.5rem 1rem;
     padding: 0.5rem 0.5rem;
     background-color: #E0E0E0;
     resize: vertical;    

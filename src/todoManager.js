@@ -94,7 +94,8 @@ function editDoneStatus(projectId = "", id) {
     const localProjects = JSON.parse(localStorage.getItem("projects"));
 
     const projectIndex = findProjectIndex(projectId);
-    const todoIndex = findTodoIndex(id);
+    const todoIndex = findTodoIndex(id, projectIndex);
+
     const doneState = localProjects[projectIndex].todos[todoIndex].done;
     localProjects[projectIndex].todos[todoIndex].done = !doneState;
     localStorage.setItem("projects", JSON.stringify(localProjects));
@@ -154,31 +155,76 @@ function getAllTodos() {
 }
 
 function sortTodos(sortBy) {
-    const unsortedTodos = getAllTodos();
-    console.log(unsortedTodos);
-    if (unsortedTodos){
-        if (sortBy === "all-todos"){
-            return unsortedTodos;
-        } 
-        else if (sortBy === "today-todos"){
-            const sortedTodos = unsortedTodos.filter((todo) => isToday(new Date(todo.todo.dueDate)));
-            return sortedTodos;
+    
+    if(["all-todos", "today-todos", "week-todos", "priority-todos"].includes(sortBy)){
+        const unsortedTodos = getAllTodos();
+        if (unsortedTodos){
+            switch (sortBy) {
+                case "all-todos":
+                    return unsortedTodos;
+                
+                case "today-todos":
+                    return unsortedTodos.filter((todo) => isToday(new Date(todo.todo.dueDate)));
+                    
+                case "week-todos":
+                    const weekTodos = unsortedTodos.filter((todo) => isThisISOWeek(new Date(todo.todo.dueDate)));
+                    weekTodos.sort((a,b) => isAfter(a.todo.dueDate, b.todo.dueDate) ? 1 : -1);
+                    return weekTodos;
+                    
+                case "priority-todos":
+                    return unsortedTodos.filter((todo) => todo.todo.priority === "high");
+                
+                default:
+                    return unsortedTodos;
+            }
         }
-        else if (sortBy === "week-todos"){
-            const sortedTodos = unsortedTodos.filter((todo) => isThisISOWeek(new Date(todo.todo.dueDate)));
-            sortedTodos.sort((a,b) => isAfter(a.todo.dueDate, b.todo.dueDate) ? 1 : -1);
-            return sortedTodos;
+        else {
+            return false;
         }
-        else if (sortBy === "priority-todos"){
-            const sortedTodos = unsortedTodos.filter((todo) => todo.todo.priority === "high");
-            return sortedTodos;
+    } 
+    else {
+        const projectIndex = findProjectIndex()
+        if (projectIndex !== undefined && projectIndex !== null){
+            const unsortedTodos = JSON.parse(localStorage.getItem("projects"))[projectIndex].todos;
+
+            switch (sortBy) {
+                case "default":
+                    return unsortedTodos
+
+                case "desc-priority":
+                    return unsortedTodos.sort((a, b) => {
+                        return getPriorityValue(b.priority) - getPriorityValue(a.priority);
+                      });
+
+                case "asc-priority":
+                    return unsortedTodos.sort((a,b) => {
+                        return getPriorityValue(a.priority) - getPriorityValue(b.priority);
+                    })
+
+                case "desc-duedate": 
+                    return unsortedTodos.sort((a,b) => isAfter(a.dueDate, b.dueDate) ? 1 : -1); 
+
+                case "asc-duedate":
+                    return unsortedTodos.sort((a,b) => isAfter(a.dueDate, b.dueDate) ? -1 : 1); 
+            
+                default:
+                    return unsortedTodos
+            }
         }
-    } else {
-        return false;
+        else {
+            return false;
+        }
     }
     
     
-    
+    function getPriorityValue(priority) {
+        switch (priority.toLowerCase()) {
+            case "high": return 3;
+            case "medium": return 2;
+            case "low": return 1;
+            default: return 0; // For any unexpected values
+        }
+        }
 }
 
 export { Project, addProject, deleteProject, addTodo, deleteTodo, findProjectIndex, editDoneStatus, editTitle, editDate, editPriority, editDescription, sortTodos};
