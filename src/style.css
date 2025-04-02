@@ -27,6 +27,7 @@ body {
 
 button {
     cursor: pointer;
+
 }
 
 .sr-only {
@@ -298,7 +299,6 @@ button:disabled {
 
 .due-date {
     text-align: end;
-    display: block;
     margin-right: 1rem;
 }
 
